@@ -1,15 +1,37 @@
 <script lang="ts">
-  import Textfield from "@smui/textfield";
-  import HelperText from "@smui/textfield/helper-text";
+  import TextField from "$lib/components/TextField.svelte";
+  import { createForm } from "felte";
+  import * as zod from "zod";
+  import { validator } from "@felte/validator-zod";
+  import { reporter } from "@felte/reporter-svelte";
+  import ValidationMessage from "$lib/components/ValidationMessage.svelte";
 
-  let value = "";
+  const schema = zod.object({
+    text: zod.string().min(1, { message: "text必須です。" }),
+    email: zod.string().min(1, { message: "emailは必須です。" }),
+  });
+
+  const { form, data, isValid } = createForm({
+    extend: [validator({ schema }), reporter],
+  });
+
+  const onSubmit = () => {
+    console.log($data);
+    console.log($isValid);
+  };
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p>
-  Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation
-</p>
+<form use:form>
+  <TextField name="text" label="text" />
+  <TextField name="email" label="email" />
+  <button on:click={onSubmit}>submit</button>
 
-<Textfield bind:value label="Label">
-  <HelperText slot="helper">Helper Text</HelperText>
-</Textfield>
+  <div>
+    validation: {$isValid ? "OK" : "NG"}
+  </div>
+
+  <div>
+    <ValidationMessage name="text" />
+    <ValidationMessage name="email" />
+  </div>
+</form>
