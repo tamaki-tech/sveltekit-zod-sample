@@ -16,6 +16,7 @@
   });
 
   const onSubmit = () => {
+    // submitの処理
     console.log($data);
     console.log($isValid);
   };

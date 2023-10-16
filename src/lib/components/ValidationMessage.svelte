@@ -5,7 +5,7 @@
 </script>
 
 <ValidationMessage for={name} let:messages>
-  <ul class="error-list">
+  <ul style="color: red;">
     {#if Array.isArray(messages)}
       {#each messages as message}
         {#if message != null}
@@ -17,11 +17,3 @@
     {/if}
   </ul>
 </ValidationMessage>
-
-<style>
-  .error-list {
-    list-style: "* ";
-    color: red;
-    font-weight: bold;
-  }
-</style>
